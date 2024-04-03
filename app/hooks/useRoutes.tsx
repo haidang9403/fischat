@@ -9,6 +9,7 @@ import {
 import { signOut } from "next-auth/react";
 
 import useConversation from "./useConversation";
+import Router from "next/navigation";
 
 const useRoutes = () => {
     const pathname = usePathname();
@@ -30,7 +31,9 @@ const useRoutes = () => {
         {
             label: 'Đăng xuất',
             href: '#',
-            onClick: () => signOut(),
+            onClick: () => {
+                signOut();
+            },
             icon: HiArrowLeftOnRectangle
         }
     ], [pathname, conversationId])
