@@ -8,6 +8,7 @@ import Link from "next/link";
 import Avatar from "@/app/components/Avatar";
 import ProfileDrawer from "./ProfileDrawer";
 import AvatarGroup from "@/app/components/AvatarGroup";
+import useActiveList from "@/app/hooks/useActiveList";
 
 
 interface HeaderProps {
@@ -22,13 +23,17 @@ const Header: React.FC<HeaderProps> = ({
     const otherUser = useOtherUser(conversation);
     const [drawerOpen, setDrawerOpen] = useState(false);
 
+    const { members } = useActiveList();
+    const isActive = members.indexOf(otherUser?.email!) !== -1;
+
+
     const statusText = useMemo(() => {
         if(conversation.isGroup){
             return `${conversation.users.length} thành viên`;
         }
 
-        return 'Hoạt động';
-    }, [conversation]);
+        return isActive ? "Hoạt động" : "Ngoại tuyến";
+    }, [conversation, isActive]);
 
     return (
         <>

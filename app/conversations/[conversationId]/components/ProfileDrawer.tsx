@@ -10,6 +10,8 @@ import { IoClose, IoTrash} from "react-icons/io5";
 import Avatar from "@/app/components/Avatar";
 import ConfirmModal from "./ConfirmModal";
 import AvatarGroup from "@/app/components/AvatarGroup";
+import useActiveChannel from "@/app/hooks/useActiveChannel";
+import useActiveList from "@/app/hooks/useActiveList";
 
 interface ProfileDrawerProps {
     isOpen: boolean;
@@ -25,23 +27,25 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
     data
 }) => {
     const otherUser = useOtherUser(data);
-    const [confirmOpen, setConfirmOpen] = useState(false)
+    const [confirmOpen, setConfirmOpen] = useState(false);
+    const { members} = useActiveList();
+    const isActive = members.indexOf(otherUser?.email!);
 
     const joinedDate = useMemo(() => {
         return format(new Date(otherUser.createAt), 'PP', { locale: vi });
-    },[otherUser.createAt])
+    },[otherUser.createAt]);
 
     const title = useMemo(() => {
         return data.name || otherUser.name;
-    }, [data.name, otherUser.name])
+    }, [data.name, otherUser.name]);
 
     const statusText = useMemo(() => {
         if(data.isGroup){
             return `${data.users.length} thành viên`;
         }
 
-        return 'Hoạt động';
-    },[data])
+        return isActive ? 'Hoạt động': 'Ngoại tuyến';
+    },[data]);
 
     return ( 
         <>
