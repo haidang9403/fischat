@@ -45,7 +45,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
         }
 
         return isActive ? 'Hoạt động': 'Ngoại tuyến';
-    },[data]);
+    },[data,isActive]);
 
     return ( 
         <>
